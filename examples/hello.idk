@@ -1,0 +1,5 @@
+INTEGER MAIN()
+BEGIN
+   PRINT "Hello World!\n";
+   RETURN 0;
+END
