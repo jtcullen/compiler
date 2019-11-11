@@ -11,9 +11,10 @@ digit  = [0-9];
 
 Lexer::Lexer(std::string &input) : input(input), cursor(input.begin()), limit(input.end()) {}
 
-Lexer::Token Lexer::nextToken() {
+Token Lexer::nextToken() {
     std::string::iterator marker;
 loop:
+    std::string::iterator start = cursor;
     /*!re2c
     re2c:define:YYCURSOR = cursor;
     re2c:define:YYLIMIT = limit;
@@ -23,31 +24,31 @@ loop:
     re2c:eof = 0;
 
     // EOF
-    $ { return Lexer::Token::END_OF_FILE; }
+    $ { return Token(Token::Type::END_OF_FILE, start, cursor); }
 
     // Default matcher
-    * { return Lexer::Token::UNKNOWN; }
+    * { return Token(Token::Type::UNKNOWN, start, cursor); }
     
     // Types
-    "INTEGER" { return Lexer::Token::INTEGER; }
+    "INTEGER" { return Token(Token::Type::INTEGER, start, cursor); }
 
     // Keywords
-    "PRINT" { return Lexer::Token::PRINT; }
-    "BEGIN" { return Lexer::Token::BEGIN; }
-    "END" { return Lexer::Token::END; }
-    "RETURN" { return Lexer::Token::RETURN; }
+    "PRINT" { return Token(Token::Type::PRINT, start, cursor); }
+    "BEGIN" { return Token(Token::Type::BEGIN, start, cursor); }
+    "END" { return Token(Token::Type::END, start, cursor); }
+    "RETURN" { return Token(Token::Type::RETURN, start, cursor); }
 
     // Special Characters
-    "(" { return Lexer::Token::L_PAREN; }
-    ")" { return Lexer::Token::R_PAREN; }
-    ";" { return Lexer::Token::SEMICOLON; }
+    "(" { return Token(Token::Type::L_PAREN, start, cursor); }
+    ")" { return Token(Token::Type::R_PAREN, start, cursor); }
+    ";" { return Token(Token::Type::SEMICOLON, start, cursor); }
 
     // Constants
-    digit+ { return Lexer::Token::INTEGER_LITERAL; }
-    '"'('\\'. | [^"\\])*'"' { return Lexer::Token::STRING_LITERAL; }
+    digit+ { return Token(Token::Type::INTEGER_LITERAL, start, cursor); }
+    '"'('\\'. | [^"\\])*'"' { return Token(Token::Type::STRING_LITERAL, start, cursor); }
 
     // User Defined Identifier
-    ("_" | letter)("_" | letter | digit)* { return Lexer::Token::IDENTIFIER; }
+    ("_" | letter)("_" | letter | digit)* { return Token(Token::Type::IDENTIFIER, start, cursor); }
 
     // Ignore whitespace
     [ \f\n\r\t\v] { goto loop; }
