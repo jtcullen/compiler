@@ -12,8 +12,8 @@ int main(int argc, char const *argv[])
 
     Lexer Lexer(str);
     
-    Lexer::Token token = Lexer.nextToken();
-    while (token != Lexer::Token::END_OF_FILE)
+    Token token = Lexer.nextToken();
+    while (token.getType() != Token::Type::END_OF_FILE)
     {
         std::cout << token << std::endl;
         token = Lexer.nextToken();

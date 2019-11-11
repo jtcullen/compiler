@@ -2,6 +2,7 @@
 #define COMPILER_LEXER_H
 
 #include<string>
+#include "Token.h"
 
 class Lexer {
 private:
@@ -9,22 +10,6 @@ private:
     std::string::iterator cursor;
     std::string::iterator limit;
 public:
-    enum Token {
-        INTEGER,
-        PRINT,
-        BEGIN,
-        END,
-        RETURN,
-        L_PAREN,
-        R_PAREN,
-        SEMICOLON,
-        INTEGER_LITERAL,
-        STRING_LITERAL,
-        IDENTIFIER,
-        UNKNOWN,
-        END_OF_FILE
-    };
-
     Lexer(std::string &input);
 
     Token nextToken();
