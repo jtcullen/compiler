@@ -8,21 +8,22 @@
 #include "Program.h"
 #include "Lexer.h"
 
-#define LOOKAHEAD 2
+#define LOOKAHEAD 0
 
 class Parser
 {
 private:
     Lexer &lexer;
-    std::vector<Token> lookaheadBuffer;
-    int lookaheadBufferPos;
-    Token nextToken();
-    Token lookahead(int i);
+    std::vector<Token> buffer;
+    int bufferPos;
+    void nextToken();
+    Token token(int i);
     Integer parseInteger();
     Return parseReturn();
     Function parseFunction();
 public:
     Parser(Lexer &lexer);
+    
     Program parse();
 };
 

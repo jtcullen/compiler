@@ -14,7 +14,8 @@ int main(int argc, char const *argv[])
     Lexer lexer(str);
     Parser parser(lexer);
 
-    parser.parse();
+    Program program = parser.parse();
+    program.print();
     
     return 0;
 }

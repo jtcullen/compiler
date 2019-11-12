@@ -1,28 +1,24 @@
 #include "Parser.h"
 
-Parser::Parser(Lexer &lexer) : lexer(lexer), lookaheadBufferPos(0)
+Parser::Parser(Lexer &lexer) : lexer(lexer), bufferPos(0)
 {
 
     // Set up lookahead buffer
-    for (size_t i = 0; i < LOOKAHEAD; i++)
+    for (size_t i = 0; i < LOOKAHEAD + 1; i++)
     {
-        lookaheadBuffer.push_back(lexer.nextToken());
+        buffer.push_back(lexer.nextToken());
     }
 }
 
-Token Parser::nextToken()
+void Parser::nextToken()
 {
-    Token next = lookaheadBuffer.at(lookaheadBufferPos);
-
-    lookaheadBuffer.at(lookaheadBufferPos) = lexer.nextToken();
-    lookaheadBufferPos = (lookaheadBufferPos + 1) % lookaheadBuffer.size();
-
-    return next;
+    buffer.at(bufferPos) = lexer.nextToken();
+    bufferPos = (bufferPos + 1) % buffer.size();
 }
 
-Token Parser::lookahead(int i)
+Token Parser::token(int i)
 {
-    return lookaheadBuffer.at((lookaheadBufferPos + i) % lookaheadBuffer.size());
+    return buffer.at((bufferPos + i) % buffer.size());
 }
 
 Program Parser::parse()
@@ -32,77 +28,75 @@ Program Parser::parse()
 
 Function Parser::parseFunction()
 {
-    Token token = nextToken();
-
-    if (token.getType() != Token::Type::INTEGER)
+    if (token(0).getType() != Token::Type::INTEGER)
     {
         throw "Expected Integer";
     }
-    token = nextToken();
+    nextToken();
 
-    if (token.getType() != Token::Type::IDENTIFIER)
+    if (token(0).getType() != Token::Type::IDENTIFIER)
     {
         throw "Expected Identifier";
     }
-    std::string name = token.getValue();
-    token = nextToken();
+    std::string name = token(0).getValue();
+    nextToken();
 
-    if (token.getType() != Token::Type::L_PAREN)
+    if (token(0).getType() != Token::Type::L_PAREN)
     {
         throw "Expected Opening Parentheses";
     }
-    token = nextToken();
+    nextToken();
 
-    if (token.getType() != Token::Type::R_PAREN)
+    if (token(0).getType() != Token::Type::R_PAREN)
     {
         throw "Expected Closing Parentheses";
     }
-    token = nextToken();
+    nextToken();
 
-    if (token.getType() != Token::Type::BEGIN)
+    if (token(0).getType() != Token::Type::BEGIN)
     {
         throw "Expected BEGIN";
     }
+    nextToken();
 
     Return ret = parseReturn();
 
-    token = nextToken();
-    if (token.getType() != Token::Type::END)
+    if (token(0).getType() != Token::Type::END)
     {
         throw "Expected END";
     }
+    nextToken();
 
     return Function(name, ret);
 }
 
 Return Parser::parseReturn()
 {
-    Token token = nextToken();
-
-    if (token.getType() != Token::Type::RETURN)
+    if (token(0).getType() != Token::Type::RETURN)
     {
         throw "Expected RETURN";
     }
+    nextToken();
 
     Integer integer = parseInteger();
 
-    token = nextToken();
-    if (token.getType() != Token::Type::SEMICOLON)
+    if (token(0).getType() != Token::Type::SEMICOLON)
     {
         throw "Expected SEMICOLON";
     }
+    nextToken();
 
     return Return(integer);
 }
 
 Integer Parser::parseInteger()
 {
-    Token token = nextToken();
-
-    if (token.getType() != Token::Type::INTEGER_LITERAL)
+    if (token(0).getType() != Token::Type::INTEGER_LITERAL)
     {
         throw "Expected integer literal";
     }
+    Integer parsed = Integer(stoi(token(0).getValue()));
+    nextToken();
 
-    return Integer(stoi(token.getValue()));
+    return parsed;
 }

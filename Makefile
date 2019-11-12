@@ -17,7 +17,7 @@ INC_DIRS := $(shell find $(SRC_DIRS) -type d) $(GENERATED_SRC_DIR)
 INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 
 CC := g++
-CPPFLAGS ?= $(INC_FLAGS) -MMD -MP -Wall
+CPPFLAGS ?= $(INC_FLAGS) -MMD -MP -Wall -g
 
 $(BUILD_DIR)/$(TARGET_EXEC): $(OBJS)
 	$(CC) $(OBJS) -o $@ $(LDFLAGS)
