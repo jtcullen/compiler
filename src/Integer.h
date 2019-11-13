@@ -2,14 +2,14 @@
 #define COMPILER_INTEGER_H
 
 #include <iostream>
-#include "ASTNode.h"
 
-class Integer: public ASTNode
+class Integer
 {
 private:
     int value;
 public:
     Integer(int value);
+    int getValue();
     void print(int indent);
     friend std::ostream& operator<<(std::ostream& os, const Integer& in);
 };

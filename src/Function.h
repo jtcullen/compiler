@@ -4,15 +4,16 @@
 #include <string>
 #include <iostream>
 #include "Return.h"
-#include "ASTNode.h"
+#include "AssemblyProgram.h"
 
-class Function: public ASTNode
+class Function
 {
 private:
     std::string name;
     Return body;
 public:
     Function(std::string name, Return body);
+    void generate(AssemblyProgram &ap);
     void print(int indent);
     friend std::ostream& operator<<(std::ostream& os, const Function& fun);
 };

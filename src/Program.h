@@ -3,14 +3,15 @@
 
 #include <iostream>
 #include "Function.h"
-#include "ASTNode.h"
+#include "AssemblyProgram.h"
 
-class Program: public ASTNode
+class Program
 {
 private:
     Function function;
 public:
     Program(Function function);
+    AssemblyProgram generate();
     void print(int indent = 0);
     friend std::ostream& operator<<(std::ostream& os, const Program& pr);
 };

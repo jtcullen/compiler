@@ -7,6 +7,12 @@ void Return::print(int indent){
     integer.print(indent + 1);
 }
 
+void Return::generate(AssemblyProgram &ap)
+{
+    ap.addLine("    mov eax, " + std::to_string(integer.getValue()));
+    ap.addLine("    ret");
+}
+
 std::ostream& operator<<(std::ostream& os, const Return& ret){
     os << "RETURN";
 

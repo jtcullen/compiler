@@ -67,6 +67,12 @@ Function Parser::parseFunction()
     }
     nextToken();
 
+    if (token(0).getType() != Token::Type::END_OF_FILE)
+    {
+        throw "Expected End of File";
+    }
+    nextToken();
+
     return Function(name, ret);
 }
 
