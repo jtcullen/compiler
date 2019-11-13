@@ -7,9 +7,10 @@ void Integer::print(int indent)
     std::cout << std::string(indent, '-') << *this << std::endl;
 }
 
-int Integer::getValue()
+void Integer::generate(AssemblyProgram &ap)
 {
-    return value;
+    // Move the integer into a register!
+    ap.addLine("    mov eax, " + std::to_string(value));
 }
 
 std::ostream &operator<<(std::ostream &os, const Integer &in)

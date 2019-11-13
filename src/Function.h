@@ -10,9 +10,10 @@ class Function
 {
 private:
     std::string name;
-    Return body;
+    Return *body;
 public:
-    Function(std::string name, Return body);
+    Function(std::string name, Return  *body);
+    ~Function();
     void generate(AssemblyProgram &ap);
     void print(int indent);
     friend std::ostream& operator<<(std::ostream& os, const Function& fun);

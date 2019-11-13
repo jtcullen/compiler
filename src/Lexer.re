@@ -42,6 +42,9 @@ loop:
     "(" { return Token(Token::Type::L_PAREN, start, cursor); }
     ")" { return Token(Token::Type::R_PAREN, start, cursor); }
     ";" { return Token(Token::Type::SEMICOLON, start, cursor); }
+    "~" { return Token(Token::Type::SQUIGLY, start, cursor); }
+    "!" { return Token(Token::Type::EXCLAMATION, start, cursor); }
+    "-" { return Token(Token::Type::MINUS, start, cursor); }
 
     // Constants
     digit+ { return Token(Token::Type::INTEGER_LITERAL, start, cursor); }

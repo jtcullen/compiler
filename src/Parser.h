@@ -18,13 +18,13 @@ private:
     int bufferPos;
     void nextToken();
     Token token(int i);
-    Integer parseInteger();
-    Return parseReturn();
-    Function parseFunction();
+    Expression *parseExpression();
+    Return *parseReturn();
+    Function *parseFunction();
 public:
     Parser(Lexer &lexer);
     
-    Program parse();
+    Program *parse();
 };
 
 #endif //COMPILER_PARSER_H

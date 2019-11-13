@@ -10,7 +10,7 @@
 
 int main(int argc, char const *argv[])
 {
-    std::ifstream t("/home/jt/Documents/compiler/examples/return_43.idk");
+    std::ifstream t("/home/jt/Documents/compiler/examples/many_unary_ops.idk");
     std::string str((std::istreambuf_iterator<char>(t)),
                     std::istreambuf_iterator<char>());
 
@@ -18,11 +18,14 @@ int main(int argc, char const *argv[])
     Parser parser(lexer);
 
     std::cout << "AST:" << std::endl;
-    Program program = parser.parse();
-    program.print();
+    Program *program = parser.parse();
+    program->print();
 
-    AssemblyProgram ap = program.generate();
+    AssemblyProgram ap = program->generate();
     std::cout << std::endl << "Assembly:" << std::endl << ap;
+
+    delete program;
+    program = nullptr;
     
     return 0;
 }

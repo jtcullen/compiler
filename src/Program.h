@@ -8,9 +8,10 @@
 class Program
 {
 private:
-    Function function;
+    Function *function;
 public:
-    Program(Function function);
+    Program(Function *function);
+    ~Program();
     AssemblyProgram generate();
     void print(int indent = 0);
     friend std::ostream& operator<<(std::ostream& os, const Program& pr);

@@ -1,4 +1,7 @@
 #include "Parser.h"
+#include "Complement.h"
+#include "Negation.h"
+#include "Negative.h"
 
 Parser::Parser(Lexer &lexer) : lexer(lexer), bufferPos(0)
 {
@@ -21,12 +24,12 @@ Token Parser::token(int i)
     return buffer.at((bufferPos + i) % buffer.size());
 }
 
-Program Parser::parse()
+Program *Parser::parse()
 {
-    return Program(parseFunction());
+    return new Program(parseFunction());
 }
 
-Function Parser::parseFunction()
+Function *Parser::parseFunction()
 {
     if (token(0).getType() != Token::Type::INTEGER)
     {
@@ -59,7 +62,7 @@ Function Parser::parseFunction()
     }
     nextToken();
 
-    Return ret = parseReturn();
+    Return *ret = parseReturn();
 
     if (token(0).getType() != Token::Type::END)
     {
@@ -73,10 +76,10 @@ Function Parser::parseFunction()
     }
     nextToken();
 
-    return Function(name, ret);
+    return new Function(name, ret);
 }
 
-Return Parser::parseReturn()
+Return *Parser::parseReturn()
 {
     if (token(0).getType() != Token::Type::RETURN)
     {
@@ -84,7 +87,7 @@ Return Parser::parseReturn()
     }
     nextToken();
 
-    Integer integer = parseInteger();
+    Expression *exp = parseExpression();
 
     if (token(0).getType() != Token::Type::SEMICOLON)
     {
@@ -92,17 +95,36 @@ Return Parser::parseReturn()
     }
     nextToken();
 
-    return Return(integer);
+    return new Return(exp);
 }
 
-Integer Parser::parseInteger()
+Expression *Parser::parseExpression()
 {
-    if (token(0).getType() != Token::Type::INTEGER_LITERAL)
+    Expression *exp;
+    if (token(0).getType() == Token::Type::INTEGER_LITERAL)
     {
-        throw "Expected integer literal";
+        exp = new Integer(stoi(token(0).getValue()));
+        nextToken();
     }
-    Integer parsed = Integer(stoi(token(0).getValue()));
-    nextToken();
+    else if (token(0).getType() == Token::Type::SQUIGLY)
+    {
+        nextToken();
+        exp = new Complement(parseExpression());
+    }
+    else if (token(0).getType() == Token::Type::EXCLAMATION)
+    {
+        nextToken();
+        exp = new Negation(parseExpression());
+    }
+    else if (token(0).getType() == Token::Type::MINUS)
+    {
+        nextToken();
+        exp = new Negative(parseExpression());
+    }
+    else
+    {
+        throw "Expected an expression";
+    }
 
-    return parsed;
+    return exp;
 }

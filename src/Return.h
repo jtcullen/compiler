@@ -2,15 +2,16 @@
 #define COMPILER_RETURN_H
 
 #include <iostream>
-#include "Integer.h"
+#include "Expression.h"
 #include "AssemblyProgram.h"
 
 class Return
 {
 private:
-    Integer integer;
+    Expression *exp;
 public:
-    Return(Integer integer);
+    Return(Expression *exp);
+    ~Return();
     void generate(AssemblyProgram &ap);
     void print(int indent);
     friend std::ostream& operator<<(std::ostream& os, const Return& ret);

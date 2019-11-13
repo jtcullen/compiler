@@ -1,19 +1,29 @@
 #include "Return.h"
 
-Return::Return(Integer integer) : integer(integer) {}
+Return::Return(Expression *exp) : exp(exp) {}
 
-void Return::print(int indent){
+Return::~Return()
+{
+    delete exp;
+}
+
+void Return::print(int indent)
+{
     std::cout << std::string(indent, '-') << *this << std::endl;
-    integer.print(indent + 1);
+    exp->print(indent + 1);
 }
 
 void Return::generate(AssemblyProgram &ap)
 {
-    ap.addLine("    mov eax, " + std::to_string(integer.getValue()));
+    // Generate code for expression first
+    exp->generate(ap);
+
+    // Now we can return
     ap.addLine("    ret");
 }
 
-std::ostream& operator<<(std::ostream& os, const Return& ret){
+std::ostream &operator<<(std::ostream &os, const Return &ret)
+{
     os << "RETURN";
 
     return os;
