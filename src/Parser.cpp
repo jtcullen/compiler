@@ -1,4 +1,8 @@
 #include "Parser.h"
+#include "Addition.h"
+#include "Subtraction.h"
+#include "Multiplication.h"
+#include "Division.h"
 #include "Complement.h"
 #include "Negation.h"
 #include "Negative.h"
@@ -98,33 +102,100 @@ Return *Parser::parseReturn()
     return new Return(exp);
 }
 
-Expression *Parser::parseExpression()
+Expression *Parser::parseAddititveExpression()
+{
+    Expression *left = parseMultiplicativeExpression();
+    while (token(0).getType() == Token::Type::PLUS || token(0).getType() == Token::Type::MINUS)
+    {
+        if (token(0).getType() == Token::Type::PLUS)
+        {
+            nextToken();
+            left = new Addition(left, parseMultiplicativeExpression());
+        }
+        else if (token(0).getType() == Token::Type::MINUS)
+        {
+            nextToken();
+            left = new Subtraction(left, parseMultiplicativeExpression());
+        }
+    }
+
+    return left;
+}
+
+Expression *Parser::parseMultiplicativeExpression()
+{
+    Expression *left = parseUnaryExpression();
+    while (token(0).getType() == Token::Type::STAR || token(0).getType() == Token::Type::SLASH)
+    {
+        if (token(0).getType() == Token::Type::STAR)
+        {
+            nextToken();
+            left = new Multiplication(left, parseUnaryExpression());
+        }
+        else if (token(0).getType() == Token::Type::SLASH)
+        {
+            nextToken();
+            left = new Division(left, parseUnaryExpression());
+        }
+    }
+
+    return left;
+}
+
+Expression *Parser::parseUnaryExpression()
 {
     Expression *exp;
-    if (token(0).getType() == Token::Type::INTEGER_LITERAL)
-    {
-        exp = new Integer(stoi(token(0).getValue()));
-        nextToken();
-    }
-    else if (token(0).getType() == Token::Type::SQUIGLY)
+    if (token(0).getType() == Token::Type::SQUIGLY)
     {
         nextToken();
-        exp = new Complement(parseExpression());
+        exp = new Complement(parsePrimaryExpression());
     }
     else if (token(0).getType() == Token::Type::EXCLAMATION)
     {
         nextToken();
-        exp = new Negation(parseExpression());
+        exp = new Negation(parsePrimaryExpression());
     }
     else if (token(0).getType() == Token::Type::MINUS)
     {
         nextToken();
-        exp = new Negative(parseExpression());
+        exp = new Negative(parsePrimaryExpression());
     }
     else
     {
-        throw "Expected an expression";
+        exp = parsePrimaryExpression();
     }
 
     return exp;
+}
+
+Expression *Parser::parsePrimaryExpression()
+{
+    Expression *exp;
+    if (token(0).getType() == Token::Type::L_PAREN)
+    {
+        nextToken();
+        exp = parseExpression();
+
+        if (token(0).getType() != Token::Type::R_PAREN)
+        {
+            throw "Expected closing parentheses";
+        }
+        nextToken();
+    }
+    else if (token(0).getType() == Token::Type::INTEGER_LITERAL)
+    {
+        exp = new Integer(stoi(token(0).getValue()));
+        nextToken();
+    }
+    else
+    {
+        throw "Expected a primary expression";
+    }
+
+    return exp;
+}
+
+Expression *Parser::parseExpression()
+{
+    return parseAddititveExpression();
 }

@@ -18,6 +18,10 @@ private:
     int bufferPos;
     void nextToken();
     Token token(int i);
+    Expression *parseAddititveExpression();
+    Expression *parseMultiplicativeExpression();
+    Expression *parseUnaryExpression();
+    Expression *parsePrimaryExpression();
     Expression *parseExpression();
     Return *parseReturn();
     Function *parseFunction();

@@ -1,0 +1,4 @@
+INTEGER MAIN()
+BEGIN
+   RETURN -2 * (1 * 4 - 2 / 2 - 1) + (6 + 2 - 3 + !(1 + 1));
+END

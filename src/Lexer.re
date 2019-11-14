@@ -44,7 +44,10 @@ loop:
     ";" { return Token(Token::Type::SEMICOLON, start, cursor); }
     "~" { return Token(Token::Type::SQUIGLY, start, cursor); }
     "!" { return Token(Token::Type::EXCLAMATION, start, cursor); }
+    "+" { return Token(Token::Type::PLUS, start, cursor); }
     "-" { return Token(Token::Type::MINUS, start, cursor); }
+    "*" { return Token(Token::Type::STAR, start, cursor); }
+    "/" { return Token(Token::Type::SLASH, start, cursor); }
 
     // Constants
     digit+ { return Token(Token::Type::INTEGER_LITERAL, start, cursor); }
