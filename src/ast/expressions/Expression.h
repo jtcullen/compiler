@@ -7,8 +7,8 @@ class Expression
 {
 public:
     virtual ~Expression() {};
-    virtual void generate(AssemblyProgram &ap) = 0;
-    virtual void print(int indent) = 0;
+    virtual void generate(AssemblyProgram &ap) const = 0;
+    virtual void print(int indent) const = 0;
 };
 
 #endif //COMPILER_EXPRESSION_H

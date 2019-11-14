@@ -2,12 +2,12 @@
 
 Integer::Integer(int value) : value(value) {}
 
-void Integer::print(int indent)
+void Integer::print(int indent) const
 {
     std::cout << std::string(indent, '-') << *this << std::endl;
 }
 
-void Integer::generate(AssemblyProgram &ap)
+void Integer::generate(AssemblyProgram &ap) const
 {
     // Move the integer into a register!
     ap.addLine("    mov eax, " + std::to_string(value));

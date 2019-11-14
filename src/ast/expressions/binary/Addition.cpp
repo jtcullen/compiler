@@ -1,21 +1,6 @@
 #include "Addition.h"
 
-Addition::Addition(Expression *left, Expression *right) : left(left), right(right) {}
-
-Addition::~Addition()
-{
-    delete left;
-    delete right;
-}
-
-void Addition::print(int indent)
-{
-    std::cout << std::string(indent, '-') << *this << std::endl;
-    left->print(indent + 1);
-    right->print(indent + 1);
-}
-
-void Addition::generate(AssemblyProgram &ap)
+void Addition::generate(AssemblyProgram &ap) const
 {
     // Generate code for left expression first
     left->generate(ap);
@@ -33,9 +18,7 @@ void Addition::generate(AssemblyProgram &ap)
     ap.addLine("    add eax, ecx");
 }
 
-std::ostream &operator<<(std::ostream &os, const Addition &in)
+std::string Addition::getName() const
 {
-    os << "Addition:";
-
-    return os;
+    return "Addition";
 }

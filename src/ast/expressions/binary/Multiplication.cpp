@@ -1,21 +1,6 @@
 #include "Multiplication.h"
 
-Multiplication::Multiplication(Expression *left, Expression *right) : left(left), right(right) {}
-
-Multiplication::~Multiplication()
-{
-    delete left;
-    delete right;
-}
-
-void Multiplication::print(int indent)
-{
-    std::cout << std::string(indent, '-') << *this << std::endl;
-    left->print(indent + 1);
-    right->print(indent + 1);
-}
-
-void Multiplication::generate(AssemblyProgram &ap)
+void Multiplication::generate(AssemblyProgram &ap) const
 {
     // Generate code for left expression first
     left->generate(ap);
@@ -33,9 +18,7 @@ void Multiplication::generate(AssemblyProgram &ap)
     ap.addLine("    imul eax, ecx");
 }
 
-std::ostream &operator<<(std::ostream &os, const Multiplication &in)
+std::string Multiplication::getName() const
 {
-    os << "Multiplication:";
-
-    return os;
+    return "Multiplication";
 }

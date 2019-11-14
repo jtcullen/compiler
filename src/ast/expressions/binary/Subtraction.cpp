@@ -1,21 +1,6 @@
 #include "Subtraction.h"
 
-Subtraction::Subtraction(Expression *left, Expression *right) : left(left), right(right) {}
-
-Subtraction::~Subtraction()
-{
-    delete left;
-    delete right;
-}
-
-void Subtraction::print(int indent)
-{
-    std::cout << std::string(indent, '-') << *this << std::endl;
-    left->print(indent + 1);
-    right->print(indent + 1);
-}
-
-void Subtraction::generate(AssemblyProgram &ap)
+void Subtraction::generate(AssemblyProgram &ap) const
 {
     // Generate code for right expression first
     right->generate(ap);
@@ -33,9 +18,7 @@ void Subtraction::generate(AssemblyProgram &ap)
     ap.addLine("    sub eax, ecx");
 }
 
-std::ostream &operator<<(std::ostream &os, const Subtraction &in)
+std::string Subtraction::getName() const
 {
-    os << "Subtraction:";
-
-    return os;
+    return "Subtraction";
 }

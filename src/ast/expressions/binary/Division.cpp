@@ -1,21 +1,6 @@
 #include "Division.h"
 
-Division::Division(Expression *left, Expression *right) : left(left), right(right) {}
-
-Division::~Division()
-{
-    delete left;
-    delete right;
-}
-
-void Division::print(int indent)
-{
-    std::cout << std::string(indent, '-') << *this << std::endl;
-    left->print(indent + 1);
-    right->print(indent + 1);
-}
-
-void Division::generate(AssemblyProgram &ap)
+void Division::generate(AssemblyProgram &ap) const
 {
     // Generate code for right expression first
     right->generate(ap);
@@ -36,9 +21,7 @@ void Division::generate(AssemblyProgram &ap)
     ap.addLine("    idiv ecx");
 }
 
-std::ostream &operator<<(std::ostream &os, const Division &in)
+std::string Division::getName() const
 {
-    os << "Division:";
-
-    return os;
+    return "Division";
 }

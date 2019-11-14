@@ -10,8 +10,8 @@ private:
     int value;
 public:
     Integer(int value);
-    void generate(AssemblyProgram &ap);
-    void print(int indent);
+    void generate(AssemblyProgram &ap) const;
+    void print(int indent) const;
     friend std::ostream& operator<<(std::ostream& os, const Integer& in);
 };
 
