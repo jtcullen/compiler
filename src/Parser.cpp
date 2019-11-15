@@ -6,6 +6,14 @@
 #include "Complement.h"
 #include "Negation.h"
 #include "Negative.h"
+#include "And.h"
+#include "Equal.h"
+#include "GreaterThan.h"
+#include "GreaterThanEqual.h"
+#include "LessThan.h"
+#include "LessThanEqual.h"
+#include "NotEqual.h"
+#include "Or.h"
 
 Parser::Parser(Lexer &lexer) : lexer(lexer), bufferPos(0)
 {
@@ -100,6 +108,87 @@ Return *Parser::parseReturn()
     nextToken();
 
     return new Return(exp);
+}
+
+Expression *Parser::parseLogicalOrExpression()
+{
+    Expression *left = parseLogicalAndExpression();
+    while (token(0).getType() == Token::Type::LOGICAL_OR)
+    {
+        if (token(0).getType() == Token::Type::LOGICAL_OR)
+        {
+            nextToken();
+            left = new Or(left, parseLogicalAndExpression());
+        }
+    }
+
+    return left;
+}
+
+Expression *Parser::parseLogicalAndExpression()
+{
+    Expression *left = parseRelationalEqualExpression();
+    while (token(0).getType() == Token::Type::LOGICAL_AND)
+    {
+        if (token(0).getType() == Token::Type::LOGICAL_AND)
+        {
+            nextToken();
+            left = new And(left, parseRelationalEqualExpression());
+        }
+    }
+
+    return left;
+}
+
+Expression *Parser::parseRelationalEqualExpression()
+{
+    Expression *left = parseRelationalExpression();
+    while (token(0).getType() == Token::Type::EQUAL || token(0).getType() == Token::Type::NOT_EQUAL)
+    {
+        if (token(0).getType() == Token::Type::EQUAL)
+        {
+            nextToken();
+            left = new Equal(left, parseRelationalExpression());
+        }
+        else if (token(0).getType() == Token::Type::NOT_EQUAL)
+        {
+            nextToken();
+            left = new NotEqual(left, parseRelationalExpression());
+        }
+    }
+
+    return left;
+}
+
+Expression *Parser::parseRelationalExpression()
+{
+    Expression *left = parseAddititveExpression();
+    while (token(0).getType() == Token::Type::LESS_THAN || token(0).getType() == Token::Type::GREATER_THAN ||
+           token(0).getType() == Token::Type::LESS_THAN_EQUAL || token(0).getType() == Token::Type::GREATER_THAN_EQUAL)
+    {
+        if (token(0).getType() == Token::Type::LESS_THAN)
+        {
+            nextToken();
+            left = new LessThan(left, parseAddititveExpression());
+        }
+        else if (token(0).getType() == Token::Type::GREATER_THAN)
+        {
+            nextToken();
+            left = new GreaterThan(left, parseAddititveExpression());
+        }
+        else if (token(0).getType() == Token::Type::LESS_THAN_EQUAL)
+        {
+            nextToken();
+            left = new LessThanEqual(left, parseAddititveExpression());
+        }
+        else if (token(0).getType() == Token::Type::GREATER_THAN_EQUAL)
+        {
+            nextToken();
+            left = new GreaterThanEqual(left, parseAddititveExpression());
+        }
+    }
+
+    return left;
 }
 
 Expression *Parser::parseAddititveExpression()
@@ -197,5 +286,5 @@ Expression *Parser::parsePrimaryExpression()
 
 Expression *Parser::parseExpression()
 {
-    return parseAddititveExpression();
+    return parseLogicalOrExpression();
 }

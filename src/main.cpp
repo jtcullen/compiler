@@ -11,7 +11,7 @@
 
 int main(int argc, char const *argv[])
 {
-    std::ifstream t("/home/jt/Documents/compiler/examples/many_binary_ops.idk");
+    std::ifstream t("/home/jt/Documents/compiler/examples/logical_ops.idk");
     std::string str((std::istreambuf_iterator<char>(t)),
                     std::istreambuf_iterator<char>());
 

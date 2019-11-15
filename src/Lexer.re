@@ -11,7 +11,8 @@ digit  = [0-9];
 
 Lexer::Lexer(std::string &input) : input(input), cursor(input.begin()), limit(input.end()) {}
 
-Token Lexer::nextToken() {
+Token Lexer::nextToken()
+{
     std::string::iterator marker;
 loop:
     std::string::iterator start = cursor;
@@ -42,12 +43,22 @@ loop:
     "(" { return Token(Token::Type::L_PAREN, start, cursor); }
     ")" { return Token(Token::Type::R_PAREN, start, cursor); }
     ";" { return Token(Token::Type::SEMICOLON, start, cursor); }
+
+    // Operators
     "~" { return Token(Token::Type::SQUIGLY, start, cursor); }
     "!" { return Token(Token::Type::EXCLAMATION, start, cursor); }
     "+" { return Token(Token::Type::PLUS, start, cursor); }
     "-" { return Token(Token::Type::MINUS, start, cursor); }
     "*" { return Token(Token::Type::STAR, start, cursor); }
     "/" { return Token(Token::Type::SLASH, start, cursor); }
+    "&&" { return Token(Token::Type::LOGICAL_AND, start, cursor); }
+    "||" { return Token(Token::Type::LOGICAL_OR, start, cursor); }
+    "==" { return Token(Token::Type::EQUAL, start, cursor); }
+    "!=" { return Token(Token::Type::NOT_EQUAL, start, cursor); }
+    "<" { return Token(Token::Type::LESS_THAN, start, cursor); }
+    "<=" { return Token(Token::Type::LESS_THAN_EQUAL, start, cursor); }
+    ">" { return Token(Token::Type::GREATER_THAN, start, cursor); }
+    ">=" { return Token(Token::Type::GREATER_THAN_EQUAL, start, cursor); }
 
     // Constants
     digit+ { return Token(Token::Type::INTEGER_LITERAL, start, cursor); }
