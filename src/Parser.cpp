@@ -45,6 +45,30 @@ Program *Parser::parse()
     return new Program(parseFunction());
 }
 
+Block *Parser::parseBlock()
+{
+    if (token(0).getType() != Token::Type::BEGIN)
+    {
+        throw "Expected BEGIN";
+    }
+    nextToken();
+
+    std::vector<BlockItem *> blockItems;
+    while (token(0).getType() != Token::Type::END)
+    {
+        BlockItem *blockItem = parseBlockItem();
+        blockItems.push_back(blockItem);
+    }
+
+    if (token(0).getType() != Token::Type::END)
+    {
+        throw "Expected END";
+    }
+    nextToken();
+
+    return new Block(blockItems);
+}
+
 Function *Parser::parseFunction()
 {
     if (token(0).getType() != Token::Type::INTEGER)
@@ -72,24 +96,7 @@ Function *Parser::parseFunction()
     }
     nextToken();
 
-    if (token(0).getType() != Token::Type::BEGIN)
-    {
-        throw "Expected BEGIN";
-    }
-    nextToken();
-
-    std::vector<BlockItem *> blockItems;
-    while (token(0).getType() != Token::Type::END)
-    {
-        BlockItem *blockItem = parseBlockItem();
-        blockItems.push_back(blockItem);
-    }
-
-    if (token(0).getType() != Token::Type::END)
-    {
-        throw "Expected END";
-    }
-    nextToken();
+    Block *block = parseBlock();
 
     if (token(0).getType() != Token::Type::END_OF_FILE)
     {
@@ -97,7 +104,7 @@ Function *Parser::parseFunction()
     }
     nextToken();
 
-    return new Function(name, blockItems);
+    return new Function(name, block);
 }
 
 BlockItem *Parser::parseBlockItem()
@@ -187,6 +194,10 @@ Statement *Parser::parseStatement()
         }
 
         statement = new If(exp, ifStatement, elseStatement);
+    }
+    else if (token(0).getType() == Token::Type::BEGIN)
+    {
+        statement = parseBlock();
     }
     else
     {

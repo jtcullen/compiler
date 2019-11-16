@@ -1,0 +1,8 @@
+INTEGER MAIN()
+BEGIN
+    BEGIN
+        INTEGER I = 0;
+    END
+    INTEGER J = 1;
+    RETURN J;
+END

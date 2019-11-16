@@ -5,7 +5,9 @@ BEGIN
    IF(A == 1)
       A = 0;
    ELSE
+   BEGIN
       A = 3;
+   END
    
    RETURN A;
 END

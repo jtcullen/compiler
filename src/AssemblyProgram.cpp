@@ -9,23 +9,27 @@ void AssemblyProgram::endScope()
 {
     if (!variableOffsetScopes.empty())
     {
+        int curLen = variableOffsetInsertionOrder.size();
         int prevLen = variableOffsetScopes.top();
         variableOffsetScopes.pop();
 
         if (prevLen > 0)
         {
-            for (std::vector<std::string>::const_iterator i = variableOffsetInsertionOrder.begin() + prevLen - 1; i != variableOffsetInsertionOrder.end(); i++)
+            for (std::vector<std::string>::const_iterator i = variableOffsetInsertionOrder.begin() + prevLen; i != variableOffsetInsertionOrder.end(); i++)
             {
                 variableOffsets.erase(*i);
             }
 
-            variableOffsetInsertionOrder.erase(variableOffsetInsertionOrder.begin() + prevLen - 1, variableOffsetInsertionOrder.end());
+            variableOffsetInsertionOrder.erase(variableOffsetInsertionOrder.begin() + prevLen, variableOffsetInsertionOrder.end());
         }
         else
         {
             variableOffsets.clear();
             variableOffsetInsertionOrder.clear();
         }
+
+        // Set back the stack pointer when the scope closes so new allocations will be correct
+        addLine("    add esp, " + std::to_string(4 * (curLen - prevLen)));
     }
     else
     {

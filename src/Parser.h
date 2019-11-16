@@ -29,6 +29,7 @@ private:
     Expression *parseExpression();
     BlockItem *parseBlockItem();
     Statement *parseStatement();
+    Block *parseBlock();
     Function *parseFunction();
 public:
     Parser(Lexer &lexer);

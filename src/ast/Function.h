@@ -3,7 +3,7 @@
 
 #include <string>
 #include <iostream>
-#include "BlockItem.h"
+#include "Block.h"
 #include "ASTNode.h"
 #include "AssemblyProgram.h"
 
@@ -11,9 +11,9 @@ class Function: public ASTNode
 {
 private:
     std::string name;
-    std::vector<BlockItem*> body;
+    Block *body;
 public:
-    Function(std::string name, std::vector<BlockItem*>  body);
+    Function(std::string name, Block *body);
     ~Function();
     void generate(AssemblyProgram &ap) const;
     void print(int indent) const;
