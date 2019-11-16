@@ -8,7 +8,7 @@
 #include "Program.h"
 #include "Lexer.h"
 
-#define LOOKAHEAD 0
+#define LOOKAHEAD 1
 
 class Parser
 {
@@ -27,7 +27,7 @@ private:
     Expression *parseUnaryExpression();
     Expression *parsePrimaryExpression();
     Expression *parseExpression();
-    Return *parseReturn();
+    Statement *parseStatement();
     Function *parseFunction();
 public:
     Parser(Lexer &lexer);

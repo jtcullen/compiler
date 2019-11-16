@@ -3,19 +3,20 @@
 
 #include <string>
 #include <iostream>
-#include "Return.h"
+#include "Statement.h"
+#include "ASTNode.h"
 #include "AssemblyProgram.h"
 
-class Function
+class Function: public ASTNode
 {
 private:
     std::string name;
-    Return *body;
+    std::vector<Statement*> body;
 public:
-    Function(std::string name, Return  *body);
+    Function(std::string name, std::vector<Statement*>  body);
     ~Function();
-    void generate(AssemblyProgram &ap);
-    void print(int indent);
+    void generate(AssemblyProgram &ap) const;
+    void print(int indent) const;
     friend std::ostream& operator<<(std::ostream& os, const Function& fun);
 };
 

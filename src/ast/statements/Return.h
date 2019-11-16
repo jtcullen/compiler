@@ -2,19 +2,21 @@
 #define COMPILER_RETURN_H
 
 #include <iostream>
+#include "Statement.h"
 #include "Expression.h"
 #include "AssemblyProgram.h"
 
-class Return
+class Return : public Statement
 {
 private:
     Expression *exp;
+
 public:
     Return(Expression *exp);
     ~Return();
-    void generate(AssemblyProgram &ap);
-    void print(int indent);
-    friend std::ostream& operator<<(std::ostream& os, const Return& ret);
+    void print(int indent) const;
+    void generate(AssemblyProgram &ap) const;
+    friend std::ostream &operator<<(std::ostream &os, const Return &ret);
 };
 
 #endif //COMPILER_RETURN_H

@@ -7,16 +7,14 @@ Program::~Program()
     delete function;
 }
 
-void Program::print(int indent)
+void Program::print(int indent) const
 {
     std::cout << std::string(indent, '-') << *this << std::endl;
     function->print(indent + 1);
 }
 
-AssemblyProgram Program::generate()
+void Program::generate(AssemblyProgram &ap) const
 {
-    AssemblyProgram ap = AssemblyProgram();
-
     // Add code to call main function
     ap.addLine("global _start");
     ap.addLine("_start:");          // This is the label that linux calls
@@ -27,8 +25,6 @@ AssemblyProgram Program::generate()
 
     // Generate the code for the rest of the program
     function->generate(ap);
-
-    return ap;
 }
 
 std::ostream &operator<<(std::ostream &os, const Program &pr)

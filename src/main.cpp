@@ -22,7 +22,8 @@ int main(int argc, char const *argv[])
     Program *program = parser.parse();
     program->print();
 
-    AssemblyProgram ap = program->generate();
+    AssemblyProgram ap;
+    program->generate(ap);
     std::cout << std::endl << "Assembly:" << std::endl << ap;
 
     delete program;

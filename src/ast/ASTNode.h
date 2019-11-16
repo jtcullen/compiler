@@ -1,14 +1,14 @@
-#ifndef COMPILER_EXPRESSION_H
-#define COMPILER_EXPRESSION_H
+#ifndef COMPILER_ASTNODE_H
+#define COMPILER_ASTNODE_H
 
 #include "AssemblyProgram.h"
 
-class Expression
+class ASTNode
 {
 public:
-    virtual ~Expression() {};
+    virtual ~ASTNode() {};
     virtual void generate(AssemblyProgram &ap) const = 0;
     virtual void print(int indent) const = 0;
 };
 
-#endif //COMPILER_EXPRESSION_H
+#endif //COMPILER_ASTNODE_H

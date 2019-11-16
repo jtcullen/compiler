@@ -14,6 +14,9 @@
 #include "LessThanEqual.h"
 #include "NotEqual.h"
 #include "Or.h"
+#include "Declaration.h"
+#include "Assignment.h"
+#include "Variable.h"
 
 Parser::Parser(Lexer &lexer) : lexer(lexer), bufferPos(0)
 {
@@ -74,7 +77,12 @@ Function *Parser::parseFunction()
     }
     nextToken();
 
-    Return *ret = parseReturn();
+    std::vector<Statement *> statements;
+    while (token(0).getType() != Token::Type::END)
+    {
+        Statement *statement = parseStatement();
+        statements.push_back(statement);
+    }
 
     if (token(0).getType() != Token::Type::END)
     {
@@ -88,18 +96,47 @@ Function *Parser::parseFunction()
     }
     nextToken();
 
-    return new Function(name, ret);
+    return new Function(name, statements);
 }
 
-Return *Parser::parseReturn()
+Statement *Parser::parseStatement()
 {
-    if (token(0).getType() != Token::Type::RETURN)
+    Statement *statement;
+    if (token(0).getType() == Token::Type::RETURN)
     {
-        throw "Expected RETURN";
+        nextToken();
+        Expression *exp = parseExpression();
+        statement = new Return(exp);
     }
-    nextToken();
+    else if (token(0).getType() == Token::Type::INTEGER)
+    {
+        Expression *exp = nullptr;
+        nextToken();
 
-    Expression *exp = parseExpression();
+        if (token(0).getType() != Token::Type::IDENTIFIER)
+        {
+            throw "Expected IDENTIFIER";
+        }
+        std::string identifier = token(0).getValue();
+        nextToken();
+
+        if (token(0).getType() != Token::Type::SEMICOLON)
+        {
+            if (token(0).getType() != Token::Type::ASSIGNMENT)
+            {
+                throw "Expected ASSIGNMENT";
+            }
+            nextToken();
+
+            exp = parseExpression();
+        }
+
+        statement = new Declaration(identifier, exp);
+    }
+    else
+    {
+        statement = parseExpression();
+    }
 
     if (token(0).getType() != Token::Type::SEMICOLON)
     {
@@ -107,7 +144,7 @@ Return *Parser::parseReturn()
     }
     nextToken();
 
-    return new Return(exp);
+    return statement;
 }
 
 Expression *Parser::parseLogicalOrExpression()
@@ -276,6 +313,11 @@ Expression *Parser::parsePrimaryExpression()
         exp = new Integer(stoi(token(0).getValue()));
         nextToken();
     }
+    else if (token(0).getType() == Token::Type::IDENTIFIER)
+    {
+        exp = new Variable(token(0).getValue());
+        nextToken();
+    }
     else
     {
         throw "Expected a primary expression";
@@ -286,5 +328,24 @@ Expression *Parser::parsePrimaryExpression()
 
 Expression *Parser::parseExpression()
 {
-    return parseLogicalOrExpression();
+    Expression *exp;
+    if (token(0).getType() == Token::Type::IDENTIFIER && token(1).getType() == Token::Type::ASSIGNMENT)
+    {
+        std::string identifier = token(0).getValue();
+        nextToken();
+
+        if (token(0).getType() != Token::Type::ASSIGNMENT)
+        {
+            throw "Expected ASSIGNMENT";
+        }
+        nextToken();
+
+        exp = new Assignment(identifier, parseExpression());
+    }
+    else
+    {
+        exp = parseLogicalOrExpression();
+    }
+
+    return exp;
 }

@@ -59,6 +59,7 @@ loop:
     "<=" { return Token(Token::Type::LESS_THAN_EQUAL, start, cursor); }
     ">" { return Token(Token::Type::GREATER_THAN, start, cursor); }
     ">=" { return Token(Token::Type::GREATER_THAN_EQUAL, start, cursor); }
+    "=" { return Token(Token::Type::ASSIGNMENT, start, cursor); }
 
     // Constants
     digit+ { return Token(Token::Type::INTEGER_LITERAL, start, cursor); }

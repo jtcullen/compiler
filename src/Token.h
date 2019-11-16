@@ -31,6 +31,7 @@ public:
         LESS_THAN_EQUAL,
         GREATER_THAN,
         GREATER_THAN_EQUAL,
+        ASSIGNMENT,
         INTEGER_LITERAL,
         STRING_LITERAL,
         IDENTIFIER,
