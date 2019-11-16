@@ -40,6 +40,7 @@ void Function::generate(AssemblyProgram &ap) const
     // Epilogue, this is here just in case someone forgets a return statement
     ap.addLine("    mov esp, ebp"); // Restore stack pointer (forget this functions local variables)
     ap.addLine("    pop ebp"); // Restore the base pointer
+    ap.addLine("    mov eax, 0"); // Return 0
     ap.addLine("    ret");
 
     ap.endScope();

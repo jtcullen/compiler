@@ -37,7 +37,7 @@ void AssemblyProgram::addVariableToScope(std::string identifier)
 {
     if (!variableOffsetScopes.empty())
     {
-        if (variableOffsets.find(identifier) != variableOffsets.end())
+        if (variableOffsets.find(identifier) == variableOffsets.end())
         {
             int offset;
             if(variableOffsetInsertionOrder.empty()){

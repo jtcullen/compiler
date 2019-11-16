@@ -5,12 +5,23 @@ Declaration::Declaration(std::string identifier, Expression *exp) : identifier(i
 void Declaration::print(int indent) const
 {
     std::cout << std::string(indent, '-') << *this << std::endl;
-    exp->print(indent + 1);
+    if (exp != nullptr)
+        exp->print(indent + 1);
 }
 
 void Declaration::generate(AssemblyProgram &ap) const
 {
-    ap.addVariableToScope(identifier);
+    if (exp != nullptr)
+    {
+        exp->generate(ap); // We will initilize the variable to this expression
+    }
+    else
+    {
+        ap.addLine("    mov eax, 0"); // Init to zero if there is no expression
+    }
+    
+    ap.addLine("    push eax"); // Put the variable on the stack
+    ap.addVariableToScope(identifier); // Remember that this is declared in the current scope
 }
 
 std::ostream &operator<<(std::ostream &os, const Declaration &in)
