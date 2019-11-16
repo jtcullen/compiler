@@ -10,7 +10,7 @@ void Assignment::print(int indent) const
 
 void Assignment::generate(AssemblyProgram &ap) const
 {
-
+    int offset = ap.getVariableOffset(identifier);
 }
 
 std::ostream &operator<<(std::ostream &os, const Assignment &in)

@@ -10,7 +10,7 @@ void Declaration::print(int indent) const
 
 void Declaration::generate(AssemblyProgram &ap) const
 {
-
+    ap.addVariableToScope(identifier);
 }
 
 std::ostream &operator<<(std::ostream &os, const Declaration &in)

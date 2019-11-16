@@ -9,7 +9,7 @@ void Variable::print(int indent) const
 
 void Variable::generate(AssemblyProgram &ap) const
 {
-
+    int offset = ap.getVariableOffset(identifier);
 }
 
 std::ostream &operator<<(std::ostream &os, const Variable &in)

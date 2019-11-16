@@ -21,6 +21,8 @@ void Function::print(int indent) const
 
 void Function::generate(AssemblyProgram &ap) const
 {
+    ap.startScope();
+
     // Generate function header
     ap.addLine("global _" + name);
     ap.addLine("_" + name + ":");
@@ -39,6 +41,8 @@ void Function::generate(AssemblyProgram &ap) const
     ap.addLine("    mov esp, ebp"); // Restore stack pointer (forget this functions local variables)
     ap.addLine("    pop ebp"); // Restore the base pointer
     ap.addLine("    ret");
+
+    ap.endScope();
 }
 
 std::ostream &operator<<(std::ostream &os, const Function &fun)
