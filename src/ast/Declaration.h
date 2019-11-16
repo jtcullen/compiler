@@ -2,10 +2,10 @@
 #define COMPILER_DECLARATION_H
 
 #include "Expression.h"
-#include "Statement.h"
+#include "BlockItem.h"
 #include <iostream>
 
-class Declaration: public Statement
+class Declaration: public BlockItem
 {
 private:
     std::string identifier;

@@ -27,6 +27,7 @@ private:
     Expression *parseUnaryExpression();
     Expression *parsePrimaryExpression();
     Expression *parseExpression();
+    BlockItem *parseBlockItem();
     Statement *parseStatement();
     Function *parseFunction();
 public:

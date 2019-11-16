@@ -1,8 +1,8 @@
 #ifndef COMPILER_STATEMENT_H
 #define COMPILER_STATEMENT_H
 
-#include "ASTNode.h"
+#include "BlockItem.h"
 
-class Statement: public ASTNode {};
+class Statement: public BlockItem {};
 
 #endif //COMPILER_STATEMENT_H

@@ -1,0 +1,11 @@
+INTEGER MAIN()
+BEGIN
+   INTEGER A = 2;
+
+   IF(A == 1)
+      A = 0;
+   ELSE
+      A = 3;
+   
+   RETURN A;
+END

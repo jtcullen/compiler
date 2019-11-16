@@ -17,6 +17,7 @@
 #include "Declaration.h"
 #include "Assignment.h"
 #include "Variable.h"
+#include "If.h"
 
 Parser::Parser(Lexer &lexer) : lexer(lexer), bufferPos(0)
 {
@@ -77,11 +78,11 @@ Function *Parser::parseFunction()
     }
     nextToken();
 
-    std::vector<Statement *> statements;
+    std::vector<BlockItem *> blockItems;
     while (token(0).getType() != Token::Type::END)
     {
-        Statement *statement = parseStatement();
-        statements.push_back(statement);
+        BlockItem *blockItem = parseBlockItem();
+        blockItems.push_back(blockItem);
     }
 
     if (token(0).getType() != Token::Type::END)
@@ -96,19 +97,14 @@ Function *Parser::parseFunction()
     }
     nextToken();
 
-    return new Function(name, statements);
+    return new Function(name, blockItems);
 }
 
-Statement *Parser::parseStatement()
+BlockItem *Parser::parseBlockItem()
 {
-    Statement *statement;
-    if (token(0).getType() == Token::Type::RETURN)
-    {
-        nextToken();
-        Expression *exp = parseExpression();
-        statement = new Return(exp);
-    }
-    else if (token(0).getType() == Token::Type::INTEGER)
+    BlockItem *blockItem;
+
+    if (token(0).getType() == Token::Type::INTEGER)
     {
         Expression *exp = nullptr;
         nextToken();
@@ -131,18 +127,77 @@ Statement *Parser::parseStatement()
             exp = parseExpression();
         }
 
-        statement = new Declaration(identifier, exp);
+        blockItem = new Declaration(identifier, exp);
+
+        if (token(0).getType() != Token::Type::SEMICOLON)
+        {
+            throw "Expected SEMICOLON";
+        }
+        nextToken();
+    }
+    else
+    {
+        blockItem = parseStatement();
+    }
+
+    return blockItem;
+}
+
+Statement *Parser::parseStatement()
+{
+    Statement *statement;
+    if (token(0).getType() == Token::Type::RETURN)
+    {
+        nextToken();
+        Expression *exp = parseExpression();
+        statement = new Return(exp);
+
+        if (token(0).getType() != Token::Type::SEMICOLON)
+        {
+            throw "Expected SEMICOLON";
+        }
+        nextToken();
+    }
+    else if (token(0).getType() == Token::Type::IF)
+    {
+        nextToken();
+
+        if (token(0).getType() != Token::Type::L_PAREN)
+        {
+            throw "Expected opening parenthese";
+        }
+        nextToken();
+
+        Expression *exp = parseExpression();
+
+        if (token(0).getType() != Token::Type::R_PAREN)
+        {
+            throw "Expected closing parenthese";
+        }
+        nextToken();
+
+        Statement *ifStatement = parseStatement();
+        Statement *elseStatement = nullptr;
+
+        if (token(0).getType() == Token::Type::ELSE)
+        {
+            nextToken();
+
+            elseStatement = parseStatement();
+        }
+
+        statement = new If(exp, ifStatement, elseStatement);
     }
     else
     {
         statement = parseExpression();
-    }
 
-    if (token(0).getType() != Token::Type::SEMICOLON)
-    {
-        throw "Expected SEMICOLON";
+        if (token(0).getType() != Token::Type::SEMICOLON)
+        {
+            throw "Expected SEMICOLON";
+        }
+        nextToken();
     }
-    nextToken();
 
     return statement;
 }

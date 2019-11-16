@@ -38,10 +38,14 @@ loop:
     "BEGIN" { return Token(Token::Type::BEGIN, start, cursor); }
     "END" { return Token(Token::Type::END, start, cursor); }
     "RETURN" { return Token(Token::Type::RETURN, start, cursor); }
+    "IF" { return Token(Token::Type::IF, start, cursor); }
+    "ELSE" { return Token(Token::Type::ELSE, start, cursor); }
 
     // Special Characters
     "(" { return Token(Token::Type::L_PAREN, start, cursor); }
     ")" { return Token(Token::Type::R_PAREN, start, cursor); }
+    ":" { return Token(Token::Type::COLON, start, cursor); }
+    "?" { return Token(Token::Type::Q_MARK, start, cursor); }
     ";" { return Token(Token::Type::SEMICOLON, start, cursor); }
 
     // Operators

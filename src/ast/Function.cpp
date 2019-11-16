@@ -1,10 +1,10 @@
 #include "Function.h"
 
-Function::Function(std::string name, std::vector<Statement *> body) : name(name), body(body) {}
+Function::Function(std::string name, std::vector<BlockItem *> body) : name(name), body(body) {}
 
 Function::~Function()
 {
-    for (std::vector<Statement *>::const_iterator i = body.begin(); i != body.end(); i++)
+    for (std::vector<BlockItem *>::const_iterator i = body.begin(); i != body.end(); i++)
     {
         delete *i;
     }
@@ -13,7 +13,7 @@ Function::~Function()
 void Function::print(int indent) const
 {
     std::cout << std::string(indent, '-') << *this << std::endl;
-    for (std::vector<Statement *>::const_iterator i = body.begin(); i != body.end(); i++)
+    for (std::vector<BlockItem *>::const_iterator i = body.begin(); i != body.end(); i++)
     {
         (*i)->print(indent + 1);
     }
@@ -32,7 +32,7 @@ void Function::generate(AssemblyProgram &ap) const
     ap.addLine("    mov ebp, esp"); // Set the ebp to the bottom of this function's stack
 
     // Generate body
-    for (std::vector<Statement *>::const_iterator i = body.begin(); i != body.end(); i++)
+    for (std::vector<BlockItem *>::const_iterator i = body.begin(); i != body.end(); i++)
     {
         (*i)->generate(ap);
     }
