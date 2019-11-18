@@ -18,6 +18,11 @@
 #include "Assignment.h"
 #include "Variable.h"
 #include "If.h"
+#include "Break.h"
+#include "Continue.h"
+#include "For.h"
+#include "NullStatement.h"
+#include "While.h"
 
 Parser::Parser(Lexer &lexer) : lexer(lexer), bufferPos(0)
 {
@@ -198,6 +203,93 @@ Statement *Parser::parseStatement()
     else if (token(0).getType() == Token::Type::BEGIN)
     {
         statement = parseBlock();
+    }
+    else if (token(0).getType() == Token::Type::SEMICOLON)
+    {
+        nextToken();
+        statement = new NullStatement();
+    }
+    else if (token(0).getType() == Token::Type::FOR)
+    {
+        nextToken();
+
+        if (token(0).getType() != Token::Type::L_PAREN)
+        {
+            throw "Expected opening parenthese";
+        }
+        nextToken();
+
+        Expression *assign = nullptr;
+        if (token(0).getType() != Token::Type::SEMICOLON)
+        {
+            assign = parseExpression();
+        }
+
+        if (token(0).getType() != Token::Type::SEMICOLON)
+        {
+            throw "Expected SEMICOLON";
+        }
+        nextToken();
+
+        Expression *control = nullptr;
+        if (token(0).getType() != Token::Type::SEMICOLON)
+        {
+            control = parseExpression();
+        }
+
+        if (token(0).getType() != Token::Type::SEMICOLON)
+        {
+            throw "Expected SEMICOLON";
+        }
+        nextToken();
+
+        Expression *inc = nullptr;
+        if (token(0).getType() != Token::Type::R_PAREN)
+        {
+            inc = parseExpression();
+        }
+
+        if (token(0).getType() != Token::Type::R_PAREN)
+        {
+            throw "Expected closing parenthese";
+        }
+        nextToken();
+
+        Statement *body = parseStatement();
+
+        statement = new For(assign, control, inc, body);
+    }
+    else if (token(0).getType() == Token::Type::WHILE)
+    {
+        nextToken();
+
+        if (token(0).getType() != Token::Type::L_PAREN)
+        {
+            throw "Expected opening parenthese";
+        }
+        nextToken();
+
+        Expression *control = parseExpression();
+
+        if (token(0).getType() != Token::Type::R_PAREN)
+        {
+            throw "Expected closing parenthese";
+        }
+        nextToken();
+
+        Statement *body = parseStatement();
+
+        statement = new While(control, body);
+    }
+    else if (token(0).getType() == Token::Type::BREAK)
+    {
+        nextToken();
+        statement = new Break();
+    }
+    else if (token(0).getType() == Token::Type::CONTINUE)
+    {
+        nextToken();
+        statement = new Continue();
     }
     else
     {

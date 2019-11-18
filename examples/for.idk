@@ -1,0 +1,12 @@
+INTEGER MAIN()
+BEGIN
+   INTEGER A = 1;
+   INTEGER B = 5;
+
+   FOR(A = 0; A <= 5; A = A + 1)
+   BEGIN
+      B = B + 1;
+   END
+   
+   RETURN B;
+END

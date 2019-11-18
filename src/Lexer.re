@@ -40,6 +40,11 @@ loop:
     "RETURN" { return Token(Token::Type::RETURN, start, cursor); }
     "IF" { return Token(Token::Type::IF, start, cursor); }
     "ELSE" { return Token(Token::Type::ELSE, start, cursor); }
+    "FOR" { return Token(Token::Type::FOR, start, cursor); }
+    "WHILE" { return Token(Token::Type::WHILE, start, cursor); }
+    "DO" { return Token(Token::Type::DO, start, cursor); }
+    "BREAK" { return Token(Token::Type::BREAK, start, cursor); }
+    "CONTINUE" { return Token(Token::Type::CONTINUE, start, cursor); }
 
     // Special Characters
     "(" { return Token(Token::Type::L_PAREN, start, cursor); }

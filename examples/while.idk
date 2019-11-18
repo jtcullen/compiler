@@ -1,0 +1,18 @@
+INTEGER MAIN()
+BEGIN
+   INTEGER A = 0;
+   INTEGER B = 0;
+
+   WHILE(1)
+   BEGIN
+      A = A + 1;
+      
+      IF(A == 5) CONTINUE;
+      
+      B = B + 1;
+      
+      IF(A == 10) BREAK;
+   END
+   
+   RETURN B;
+END

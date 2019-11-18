@@ -6,6 +6,7 @@
 #include <map>
 #include <vector>
 #include <stack>
+#include <utility>
 
 class AssemblyProgram
 {
@@ -14,13 +15,19 @@ private:
     std::vector<std::string> variableOffsetInsertionOrder;
     std::stack<int> variableOffsetScopes;
     std::vector<std::string> lines;
+    std::stack<std::pair<std::string, std::string>> loopLabels;
+
 public:
+    void startLoop(std::string start, std::string end);
+    void endLoop();
+    std::string getLoopStartLabel();
+    std::string getLoopEndLabel();
     void startScope();
     void endScope();
     void addVariableToScope(std::string identifier);
     int getVariableOffset(std::string identifier);
     void addLine(std::string line);
-    friend std::ostream& operator<<(std::ostream& os, const AssemblyProgram& ap);
+    friend std::ostream &operator<<(std::ostream &os, const AssemblyProgram &ap);
 };
 
 #endif //COMPILER_ASSEMBLYPROGRAM_H

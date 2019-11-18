@@ -1,5 +1,39 @@
 #include "AssemblyProgram.h"
 
+void AssemblyProgram::startLoop(std::string start, std::string end)
+{
+    loopLabels.push(std::make_pair(start, end));
+}
+
+void AssemblyProgram::endLoop()
+{
+    loopLabels.pop();
+}
+
+std::string AssemblyProgram::getLoopStartLabel()
+{
+    if (!loopLabels.empty())
+    {
+        return loopLabels.top().first;
+    }
+    else
+    {
+        throw "No loop is open!";
+    }
+}
+
+std::string AssemblyProgram::getLoopEndLabel()
+{
+    if (!loopLabels.empty())
+    {
+        return loopLabels.top().second;
+    }
+    else
+    {
+        throw "No loop is open!";
+    }
+}
+
 void AssemblyProgram::startScope()
 {
     variableOffsetScopes.push(variableOffsetInsertionOrder.size());
@@ -44,14 +78,16 @@ void AssemblyProgram::addVariableToScope(std::string identifier)
         if (variableOffsets.find(identifier) == variableOffsets.end())
         {
             int offset;
-            if(variableOffsetInsertionOrder.empty()){
+            if (variableOffsetInsertionOrder.empty())
+            {
                 offset = -4;
-            }else
+            }
+            else
             {
                 std::map<std::string, int>::iterator it = variableOffsets.find(variableOffsetInsertionOrder.back());
                 offset = it->second - 4;
             }
-            
+
             variableOffsets.insert({identifier, offset});
             variableOffsetInsertionOrder.push_back(identifier);
         }
