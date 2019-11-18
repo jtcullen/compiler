@@ -119,6 +119,16 @@ void AssemblyProgram::addLine(std::string line)
     lines.push_back(line);
 }
 
+void AssemblyProgram::setMainFlag(bool flag)
+{
+    mainFlag = flag;
+}
+
+bool AssemblyProgram::getMainFlag()
+{
+    return mainFlag;
+}
+
 std::ostream &operator<<(std::ostream &os, const AssemblyProgram &ap)
 {
     for (std::vector<std::string>::const_iterator l = ap.lines.begin(); l != ap.lines.end(); l++)

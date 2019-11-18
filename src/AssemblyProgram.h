@@ -16,10 +16,10 @@ private:
     std::stack<int> variableOffsetScopes;
     std::vector<std::string> lines;
     std::stack<std::pair<std::string, std::string>> loopLabels;
-    std::bool mainFlag;
+    bool mainFlag;
 public:
-    void setMainFlag(std::bool flag){mainFlag = flag;}
-    std::bool getMainFlag(){return mainFlag;}
+    void setMainFlag(bool flag);
+    bool getMainFlag();
     void startLoop(std::string start, std::string end);
     void endLoop();
     std::string getLoopStartLabel();
