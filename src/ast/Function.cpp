@@ -35,7 +35,7 @@ void Function::generate(AssemblyProgram &ap) const
 }
 void Function::MAIN(const Function &fun,AssemblyProgram &ap){
     if(fun.name == "MAIN"){//if function is main set flag to true
-        ap.setFlag(true);
+        ap.setMainFlag(true);
     }
 }
 
