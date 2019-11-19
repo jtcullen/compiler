@@ -53,6 +53,7 @@ private:
     std::string value;
     std::bool isValidInt;
 public:
+    void ValidCheck();
     std::bool getIsValidInt(){return isValidInt;}
     void setIsValidInt(std::bool x){isValidInt = x;}
     Token(Type type, std::string::iterator begin, std::string::iterator end);
