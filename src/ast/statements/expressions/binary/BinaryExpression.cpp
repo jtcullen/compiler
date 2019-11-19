@@ -8,11 +8,11 @@ BinaryExpression::~BinaryExpression()
     delete right;
 }
 
-void BinaryExpression::print(int indent) const
+void BinaryExpression::print(std::ostream &os, int indent) const
 {
-    std::cout << std::string(indent, '-') << *this << std::endl;
-    left->print(indent + 1);
-    right->print(indent + 1);
+    os << std::string(indent, '-') << *this << std::endl;
+    left->print(os, indent + 1);
+    right->print(os, indent + 1);
 }
 
 std::ostream &operator<<(std::ostream &os, const BinaryExpression &in)

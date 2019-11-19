@@ -4,9 +4,9 @@ NullStatement::NullStatement() {}
 
 NullStatement::~NullStatement() {}
 
-void NullStatement::print(int indent) const
+void NullStatement::print(std::ostream &os, int indent) const
 {
-    std::cout << std::string(indent, '-') << *this << std::endl;
+    os << std::string(indent, '-') << *this << std::endl;
 }
 
 void NullStatement::generate(AssemblyProgram &ap) const {}

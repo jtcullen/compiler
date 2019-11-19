@@ -4,9 +4,9 @@ Continue::Continue() {}
 
 Continue::~Continue() {}
 
-void Continue::print(int indent) const
+void Continue::print(std::ostream &os, int indent) const
 {
-    std::cout << std::string(indent, '-') << *this << std::endl;
+    os << std::string(indent, '-') << *this << std::endl;
 }
 
 void Continue::generate(AssemblyProgram &ap) const

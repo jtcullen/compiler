@@ -45,6 +45,30 @@ Token Parser::token(int i)
     return buffer.at((bufferPos + i) % buffer.size());
 }
 
+Token Parser::expect(Token::Type tokenType)
+{
+    Token t = token(0);
+    if (t.getType() != tokenType)
+    {
+        throw "Expected a token of type: " + tokenType;
+    }
+    nextToken();
+
+    return t;
+}
+
+bool Parser::accept(Token::Type tokenType)
+{
+    Token t = token(0);
+    if (t.getType() == tokenType)
+    {
+        nextToken();
+        return true;
+    }
+
+    return false;
+}
+
 Program *Parser::parse()
 {
     return new Program(parseFunction());
@@ -52,11 +76,7 @@ Program *Parser::parse()
 
 Block *Parser::parseBlock()
 {
-    if (token(0).getType() != Token::Type::BEGIN)
-    {
-        throw "Expected BEGIN";
-    }
-    nextToken();
+    expect(Token::Type::BEGIN);
 
     std::vector<BlockItem *> blockItems;
     while (token(0).getType() != Token::Type::END)
@@ -65,49 +85,23 @@ Block *Parser::parseBlock()
         blockItems.push_back(blockItem);
     }
 
-    if (token(0).getType() != Token::Type::END)
-    {
-        throw "Expected END";
-    }
-    nextToken();
+    expect(Token::Type::END);
 
     return new Block(blockItems);
 }
 
 Function *Parser::parseFunction()
 {
-    if (token(0).getType() != Token::Type::INTEGER)
-    {
-        throw "Expected Integer";
-    }
-    nextToken();
+    expect(Token::Type::INTEGER);
 
-    if (token(0).getType() != Token::Type::IDENTIFIER)
-    {
-        throw "Expected Identifier";
-    }
-    std::string name = token(0).getValue();
-    nextToken();
+    std::string name = expect(Token::Type::IDENTIFIER).getValue();
 
-    if (token(0).getType() != Token::Type::L_PAREN)
-    {
-        throw "Expected Opening Parentheses";
-    }
-    nextToken();
-
-    if (token(0).getType() != Token::Type::R_PAREN)
-    {
-        throw "Expected Closing Parentheses";
-    }
-    nextToken();
+    expect(Token::Type::L_PAREN);
+    expect(Token::Type::R_PAREN);
 
     Block *block = parseBlock();
 
-    if (token(0).getType() != Token::Type::END_OF_FILE)
-    {
-        throw "Expected End of File";
-    }
-    nextToken();
+    expect(Token::Type::END_OF_FILE);
 
     return new Function(name, block);
 }
@@ -116,36 +110,22 @@ BlockItem *Parser::parseBlockItem()
 {
     BlockItem *blockItem;
 
-    if (token(0).getType() == Token::Type::INTEGER)
+    if (accept(Token::Type::INTEGER))
     {
         Expression *exp = nullptr;
-        nextToken();
 
-        if (token(0).getType() != Token::Type::IDENTIFIER)
-        {
-            throw "Expected IDENTIFIER";
-        }
-        std::string identifier = token(0).getValue();
-        nextToken();
+        std::string identifier = expect(Token::Type::IDENTIFIER).getValue();
 
         if (token(0).getType() != Token::Type::SEMICOLON)
         {
-            if (token(0).getType() != Token::Type::ASSIGNMENT)
-            {
-                throw "Expected ASSIGNMENT";
-            }
-            nextToken();
+            expect(Token::Type::ASSIGNMENT);
 
             exp = parseExpression();
         }
 
         blockItem = new Declaration(identifier, exp);
 
-        if (token(0).getType() != Token::Type::SEMICOLON)
-        {
-            throw "Expected SEMICOLON";
-        }
-        nextToken();
+        expect(Token::Type::SEMICOLON);
     }
     else
     {
@@ -158,43 +138,26 @@ BlockItem *Parser::parseBlockItem()
 Statement *Parser::parseStatement()
 {
     Statement *statement;
-    if (token(0).getType() == Token::Type::RETURN)
+    if (accept(Token::Type::RETURN))
     {
-        nextToken();
         Expression *exp = parseExpression();
         statement = new Return(exp);
 
-        if (token(0).getType() != Token::Type::SEMICOLON)
-        {
-            throw "Expected SEMICOLON";
-        }
-        nextToken();
+        expect(Token::Type::SEMICOLON);
     }
-    else if (token(0).getType() == Token::Type::IF)
+    else if (accept(Token::Type::IF))
     {
-        nextToken();
-
-        if (token(0).getType() != Token::Type::L_PAREN)
-        {
-            throw "Expected opening parenthese";
-        }
-        nextToken();
+        expect(Token::Type::L_PAREN);
 
         Expression *exp = parseExpression();
 
-        if (token(0).getType() != Token::Type::R_PAREN)
-        {
-            throw "Expected closing parenthese";
-        }
-        nextToken();
+        expect(Token::Type::R_PAREN);
 
         Statement *ifStatement = parseStatement();
         Statement *elseStatement = nullptr;
 
-        if (token(0).getType() == Token::Type::ELSE)
+        if (accept(Token::Type::ELSE))
         {
-            nextToken();
-
             elseStatement = parseStatement();
         }
 
@@ -204,20 +167,13 @@ Statement *Parser::parseStatement()
     {
         statement = parseBlock();
     }
-    else if (token(0).getType() == Token::Type::SEMICOLON)
+    else if (accept(Token::Type::SEMICOLON))
     {
-        nextToken();
         statement = new NullStatement();
     }
-    else if (token(0).getType() == Token::Type::FOR)
+    else if (accept(Token::Type::FOR))
     {
-        nextToken();
-
-        if (token(0).getType() != Token::Type::L_PAREN)
-        {
-            throw "Expected opening parenthese";
-        }
-        nextToken();
+        expect(Token::Type::L_PAREN);
 
         Expression *assign = nullptr;
         if (token(0).getType() != Token::Type::SEMICOLON)
@@ -225,11 +181,7 @@ Statement *Parser::parseStatement()
             assign = parseExpression();
         }
 
-        if (token(0).getType() != Token::Type::SEMICOLON)
-        {
-            throw "Expected SEMICOLON";
-        }
-        nextToken();
+        expect(Token::Type::SEMICOLON);
 
         Expression *control = nullptr;
         if (token(0).getType() != Token::Type::SEMICOLON)
@@ -237,11 +189,7 @@ Statement *Parser::parseStatement()
             control = parseExpression();
         }
 
-        if (token(0).getType() != Token::Type::SEMICOLON)
-        {
-            throw "Expected SEMICOLON";
-        }
-        nextToken();
+        expect(Token::Type::SEMICOLON);
 
         Expression *inc = nullptr;
         if (token(0).getType() != Token::Type::R_PAREN)
@@ -249,57 +197,41 @@ Statement *Parser::parseStatement()
             inc = parseExpression();
         }
 
-        if (token(0).getType() != Token::Type::R_PAREN)
-        {
-            throw "Expected closing parenthese";
-        }
-        nextToken();
+        expect(Token::Type::R_PAREN);
 
         Statement *body = parseStatement();
 
         statement = new For(assign, control, inc, body);
     }
-    else if (token(0).getType() == Token::Type::WHILE)
+    else if (accept(Token::Type::WHILE))
     {
-        nextToken();
-
-        if (token(0).getType() != Token::Type::L_PAREN)
-        {
-            throw "Expected opening parenthese";
-        }
-        nextToken();
+        expect(Token::Type::L_PAREN);
 
         Expression *control = parseExpression();
 
-        if (token(0).getType() != Token::Type::R_PAREN)
-        {
-            throw "Expected closing parenthese";
-        }
-        nextToken();
+        expect(Token::Type::R_PAREN);
 
         Statement *body = parseStatement();
 
         statement = new While(control, body);
     }
-    else if (token(0).getType() == Token::Type::BREAK)
+    else if (accept(Token::Type::BREAK))
     {
-        nextToken();
         statement = new Break();
+
+        expect(Token::Type::SEMICOLON);
     }
-    else if (token(0).getType() == Token::Type::CONTINUE)
+    else if (accept(Token::Type::CONTINUE))
     {
-        nextToken();
         statement = new Continue();
+
+        expect(Token::Type::SEMICOLON);
     }
     else
     {
         statement = parseExpression();
 
-        if (token(0).getType() != Token::Type::SEMICOLON)
-        {
-            throw "Expected SEMICOLON";
-        }
-        nextToken();
+        expect(Token::Type::SEMICOLON);
     }
 
     return statement;
@@ -310,9 +242,8 @@ Expression *Parser::parseLogicalOrExpression()
     Expression *left = parseLogicalAndExpression();
     while (token(0).getType() == Token::Type::LOGICAL_OR)
     {
-        if (token(0).getType() == Token::Type::LOGICAL_OR)
+        if (accept(Token::Type::LOGICAL_OR))
         {
-            nextToken();
             left = new Or(left, parseLogicalAndExpression());
         }
     }
@@ -325,9 +256,8 @@ Expression *Parser::parseLogicalAndExpression()
     Expression *left = parseRelationalEqualExpression();
     while (token(0).getType() == Token::Type::LOGICAL_AND)
     {
-        if (token(0).getType() == Token::Type::LOGICAL_AND)
+        if (accept(Token::Type::LOGICAL_AND))
         {
-            nextToken();
             left = new And(left, parseRelationalEqualExpression());
         }
     }
@@ -340,14 +270,12 @@ Expression *Parser::parseRelationalEqualExpression()
     Expression *left = parseRelationalExpression();
     while (token(0).getType() == Token::Type::EQUAL || token(0).getType() == Token::Type::NOT_EQUAL)
     {
-        if (token(0).getType() == Token::Type::EQUAL)
+        if (accept(Token::Type::EQUAL))
         {
-            nextToken();
             left = new Equal(left, parseRelationalExpression());
         }
-        else if (token(0).getType() == Token::Type::NOT_EQUAL)
+        else if (accept(Token::Type::NOT_EQUAL))
         {
-            nextToken();
             left = new NotEqual(left, parseRelationalExpression());
         }
     }
@@ -361,24 +289,20 @@ Expression *Parser::parseRelationalExpression()
     while (token(0).getType() == Token::Type::LESS_THAN || token(0).getType() == Token::Type::GREATER_THAN ||
            token(0).getType() == Token::Type::LESS_THAN_EQUAL || token(0).getType() == Token::Type::GREATER_THAN_EQUAL)
     {
-        if (token(0).getType() == Token::Type::LESS_THAN)
+        if (accept(Token::Type::LESS_THAN))
         {
-            nextToken();
             left = new LessThan(left, parseAddititveExpression());
         }
-        else if (token(0).getType() == Token::Type::GREATER_THAN)
+        else if (accept(Token::Type::GREATER_THAN))
         {
-            nextToken();
             left = new GreaterThan(left, parseAddititveExpression());
         }
-        else if (token(0).getType() == Token::Type::LESS_THAN_EQUAL)
+        else if (accept(Token::Type::LESS_THAN_EQUAL))
         {
-            nextToken();
             left = new LessThanEqual(left, parseAddititveExpression());
         }
-        else if (token(0).getType() == Token::Type::GREATER_THAN_EQUAL)
+        else if (accept(Token::Type::GREATER_THAN_EQUAL))
         {
-            nextToken();
             left = new GreaterThanEqual(left, parseAddititveExpression());
         }
     }
@@ -391,14 +315,12 @@ Expression *Parser::parseAddititveExpression()
     Expression *left = parseMultiplicativeExpression();
     while (token(0).getType() == Token::Type::PLUS || token(0).getType() == Token::Type::MINUS)
     {
-        if (token(0).getType() == Token::Type::PLUS)
+        if (accept(Token::Type::PLUS))
         {
-            nextToken();
             left = new Addition(left, parseMultiplicativeExpression());
         }
-        else if (token(0).getType() == Token::Type::MINUS)
+        else if (accept(Token::Type::MINUS))
         {
-            nextToken();
             left = new Subtraction(left, parseMultiplicativeExpression());
         }
     }
@@ -411,14 +333,12 @@ Expression *Parser::parseMultiplicativeExpression()
     Expression *left = parseUnaryExpression();
     while (token(0).getType() == Token::Type::STAR || token(0).getType() == Token::Type::SLASH)
     {
-        if (token(0).getType() == Token::Type::STAR)
+        if (accept(Token::Type::STAR))
         {
-            nextToken();
             left = new Multiplication(left, parseUnaryExpression());
         }
-        else if (token(0).getType() == Token::Type::SLASH)
+        else if (accept(Token::Type::SLASH))
         {
-            nextToken();
             left = new Division(left, parseUnaryExpression());
         }
     }
@@ -429,19 +349,16 @@ Expression *Parser::parseMultiplicativeExpression()
 Expression *Parser::parseUnaryExpression()
 {
     Expression *exp;
-    if (token(0).getType() == Token::Type::SQUIGLY)
+    if (accept(Token::Type::SQUIGLY))
     {
-        nextToken();
         exp = new Complement(parsePrimaryExpression());
     }
-    else if (token(0).getType() == Token::Type::EXCLAMATION)
+    else if (accept(Token::Type::EXCLAMATION))
     {
-        nextToken();
         exp = new Negation(parsePrimaryExpression());
     }
-    else if (token(0).getType() == Token::Type::MINUS)
+    else if (accept(Token::Type::MINUS))
     {
-        nextToken();
         exp = new Negative(parsePrimaryExpression());
     }
     else
@@ -455,16 +372,11 @@ Expression *Parser::parseUnaryExpression()
 Expression *Parser::parsePrimaryExpression()
 {
     Expression *exp;
-    if (token(0).getType() == Token::Type::L_PAREN)
+    if (accept(Token::Type::L_PAREN))
     {
-        nextToken();
         exp = parseExpression();
 
-        if (token(0).getType() != Token::Type::R_PAREN)
-        {
-            throw "Expected closing parentheses";
-        }
-        nextToken();
+        expect(Token::Type::R_PAREN);
     }
     else if (token(0).getType() == Token::Type::INTEGER_LITERAL)
     {
@@ -492,11 +404,7 @@ Expression *Parser::parseExpression()
         std::string identifier = token(0).getValue();
         nextToken();
 
-        if (token(0).getType() != Token::Type::ASSIGNMENT)
-        {
-            throw "Expected ASSIGNMENT";
-        }
-        nextToken();
+        expect(Token::Type::ASSIGNMENT);
 
         exp = new Assignment(identifier, parseExpression());
     }

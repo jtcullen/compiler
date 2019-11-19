@@ -9,15 +9,15 @@ If::~If()
     delete elseStatement;
 }
 
-void If::print(int indent) const
+void If::print(std::ostream &os, int indent) const
 {
-    std::cout << std::string(indent, '-') << *this << std::endl;
-    exp->print(indent + 1);
-    ifStatement->print(indent + 1);
+    os << std::string(indent, '-') << *this << std::endl;
+    exp->print(os, indent + 1);
+    ifStatement->print(os, indent + 1);
 
     if (elseStatement != nullptr)
     {
-        elseStatement->print(indent + 1);
+        elseStatement->print(os, indent + 1);
     }
 }
 

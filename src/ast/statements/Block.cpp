@@ -10,12 +10,12 @@ Block::~Block()
     }
 }
 
-void Block::print(int indent) const
+void Block::print(std::ostream &os, int indent) const
 {
-    std::cout << std::string(indent, '-') << *this << std::endl;
+    os << std::string(indent, '-') << *this << std::endl;
     for (std::vector<BlockItem *>::const_iterator i = body.begin(); i != body.end(); i++)
     {
-        (*i)->print(indent + 1);
+        (*i)->print(os, indent + 1);
     }
 }
 

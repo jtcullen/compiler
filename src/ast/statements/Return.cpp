@@ -7,10 +7,10 @@ Return::~Return()
     delete exp;
 }
 
-void Return::print(int indent) const
+void Return::print(std::ostream &os, int indent) const
 {
-    std::cout << std::string(indent, '-') << *this << std::endl;
-    exp->print(indent + 1);
+    os << std::string(indent, '-') << *this << std::endl;
+    exp->print(os, indent + 1);
 }
 
 void Return::generate(AssemblyProgram &ap) const

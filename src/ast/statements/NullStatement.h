@@ -10,7 +10,7 @@ class NullStatement : public Statement
 public:
     NullStatement();
     ~NullStatement();
-    void print(int indent) const;
+    void print(std::ostream &os, int indent) const;
     void generate(AssemblyProgram &ap) const;
     friend std::ostream &operator<<(std::ostream &os, const NullStatement &ret);
 };

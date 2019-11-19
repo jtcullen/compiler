@@ -2,9 +2,9 @@
 
 Variable::Variable(std::string identifier) : identifier(identifier) {}
 
-void Variable::print(int indent) const
+void Variable::print(std::ostream &os, int indent) const
 {
-    std::cout << std::string(indent, '-') << *this << std::endl;
+    os << std::string(indent, '-') << *this << std::endl;
 }
 
 void Variable::generate(AssemblyProgram &ap) const

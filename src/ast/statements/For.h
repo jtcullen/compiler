@@ -14,7 +14,7 @@ private:
 public:
     For(Expression *assign, Expression *control, Expression *inc, Statement *body);
     ~For();
-    void print(int indent) const;
+    void print(std::ostream &os, int indent) const;
     void generate(AssemblyProgram &ap) const;
     friend std::ostream &operator<<(std::ostream &os, const For &ret);
 };

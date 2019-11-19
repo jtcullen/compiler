@@ -7,10 +7,10 @@ UnaryExpression::~UnaryExpression()
     delete exp;
 }
 
-void UnaryExpression::print(int indent) const
+void UnaryExpression::print(std::ostream &os, int indent) const
 {
-    std::cout << std::string(indent, '-') << *this << std::endl;
-    exp->print(indent + 1);
+    os << std::string(indent, '-') << *this << std::endl;
+    exp->print(os, indent + 1);
 }
 
 std::ostream &operator<<(std::ostream &os, const UnaryExpression &in)

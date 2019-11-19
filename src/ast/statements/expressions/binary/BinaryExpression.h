@@ -11,7 +11,7 @@ protected:
 public:
     BinaryExpression(Expression *left, Expression *right);
     ~BinaryExpression();
-    void print(int indent) const;
+    void print(std::ostream &os, int indent) const;
     virtual std::string getName() const = 0;
     friend std::ostream& operator<<(std::ostream& os, const BinaryExpression& in);
 };

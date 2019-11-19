@@ -8,11 +8,11 @@ While::~While()
     delete body;
 }
 
-void While::print(int indent) const
+void While::print(std::ostream &os, int indent) const
 {
-    std::cout << std::string(indent, '-') << *this << std::endl;
-    exp->print(indent + 1);
-    body->print(indent + 1);
+    os << std::string(indent, '-') << *this << std::endl;
+    exp->print(os, indent + 1);
+    body->print(os, indent + 1);
 }
 
 void While::generate(AssemblyProgram &ap) const

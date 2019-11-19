@@ -11,7 +11,7 @@ private:
 public:
     Variable(std::string identifier);
     void generate(AssemblyProgram &ap) const;
-    void print(int indent) const;
+    void print(std::ostream &os, int indent) const;
     friend std::ostream& operator<<(std::ostream& os, const Variable& in);
 };
 

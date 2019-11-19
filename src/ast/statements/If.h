@@ -14,7 +14,7 @@ private:
 public:
     If(Expression *exp, Statement *ifStatement, Statement *elseStatement);
     ~If();
-    void print(int indent) const;
+    void print(std::ostream &os, int indent) const;
     void generate(AssemblyProgram &ap) const;
     friend std::ostream &operator<<(std::ostream &os, const If &ret);
 };

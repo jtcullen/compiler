@@ -14,7 +14,7 @@ public:
     Program(Function *function);
     ~Program();
     void generate(AssemblyProgram &ap) const;
-    void print(int indent = 0) const;
+    void print(std::ostream &os, int indent = 0) const;
     friend std::ostream& operator<<(std::ostream& os, const Program& pr);
 };
 

@@ -4,9 +4,9 @@ Break::Break() {}
 
 Break::~Break() {}
 
-void Break::print(int indent) const
+void Break::print(std::ostream &os, int indent) const
 {
-    std::cout << std::string(indent, '-') << *this << std::endl;
+    os << std::string(indent, '-') << *this << std::endl;
 }
 
 void Break::generate(AssemblyProgram &ap) const

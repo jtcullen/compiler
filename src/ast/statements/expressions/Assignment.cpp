@@ -2,10 +2,10 @@
 
 Assignment::Assignment(std::string identifier, Expression *exp) : identifier(identifier), exp(exp) {}
 
-void Assignment::print(int indent) const
+void Assignment::print(std::ostream &os, int indent) const
 {
-    std::cout << std::string(indent, '-') << *this << std::endl;
-    exp->print(indent + 1);
+    os << std::string(indent, '-') << *this << std::endl;
+    exp->print(os, indent + 1);
 }
 
 void Assignment::generate(AssemblyProgram &ap) const

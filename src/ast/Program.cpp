@@ -7,10 +7,10 @@ Program::~Program()
     delete function;
 }
 
-void Program::print(int indent) const
+void Program::print(std::ostream &os, int indent) const
 {
-    std::cout << std::string(indent, '-') << *this << std::endl;
-    function->print(indent + 1);
+    os << std::string(indent, '-') << *this << std::endl;
+    function->print(os, indent + 1);
 }
 
 void Program::generate(AssemblyProgram &ap) const

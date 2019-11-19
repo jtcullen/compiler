@@ -2,11 +2,11 @@
 
 Declaration::Declaration(std::string identifier, Expression *exp) : identifier(identifier), exp(exp) {}
 
-void Declaration::print(int indent) const
+void Declaration::print(std::ostream &os, int indent) const
 {
-    std::cout << std::string(indent, '-') << *this << std::endl;
+    os << std::string(indent, '-') << *this << std::endl;
     if (exp != nullptr)
-        exp->print(indent + 1);
+        exp->print(os, indent + 1);
 }
 
 void Declaration::generate(AssemblyProgram &ap) const

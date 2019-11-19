@@ -2,9 +2,9 @@
 
 Integer::Integer(int value) : value(value) {}
 
-void Integer::print(int indent) const
+void Integer::print(std::ostream &os, int indent) const
 {
-    std::cout << std::string(indent, '-') << *this << std::endl;
+    os << std::string(indent, '-') << *this << std::endl;
 }
 
 void Integer::generate(AssemblyProgram &ap) const

@@ -18,6 +18,8 @@ private:
     int bufferPos;
     void nextToken();
     Token token(int i);
+    Token expect(Token::Type tokenType);
+    bool accept(Token::Type tokenType);
     Expression *parseLogicalOrExpression();
     Expression *parseLogicalAndExpression();
     Expression *parseRelationalEqualExpression();

@@ -10,26 +10,26 @@ For::~For()
     delete body;
 }
 
-void For::print(int indent) const
+void For::print(std::ostream &os, int indent) const
 {
-    std::cout << std::string(indent, '-') << *this << std::endl;
+    os << std::string(indent, '-') << *this << std::endl;
 
     if (assign != nullptr)
     {
-        assign->print(indent + 1);
+        assign->print(os, indent + 1);
     }
 
     if (control != nullptr)
     {
-        control->print(indent + 1);
+        control->print(os, indent + 1);
     }
 
     if (inc != nullptr)
     {
-        inc->print(indent + 1);
+        inc->print(os, indent + 1);
     }
 
-    body->print(indent + 1);
+    body->print(os, indent + 1);
 }
 
 void For::generate(AssemblyProgram &ap) const
