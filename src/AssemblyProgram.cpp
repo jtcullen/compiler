@@ -93,12 +93,12 @@ void AssemblyProgram::addVariableToScope(std::string identifier)
         }
         else
         {
-            throw "Variable already exists in scope!";
+            throw std::runtime_error("Variable already exists in scope!");
         }
     }
     else
     {
-        throw "No scope is open!";
+        throw std::runtime_error("No scope is open!");
     }
 }
 
@@ -111,7 +111,7 @@ int AssemblyProgram::getVariableOffset(std::string identifier)
         return it->second;
     }
 
-    throw "Variable not in scope!";
+    throw std::runtime_error("Variable not in scope!");
 }
 
 void AssemblyProgram::addLine(std::string line)

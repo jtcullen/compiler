@@ -50,7 +50,7 @@ Token Parser::expect(Token::Type tokenType)
     Token t = token(0);
     if (t.getType() != tokenType)
     {
-        throw std::runtime_error("Expected a token of type: " + tokenType);
+        throw std::runtime_error("Expected a token of type: " + std::to_string(tokenType));
     }
     nextToken();
 

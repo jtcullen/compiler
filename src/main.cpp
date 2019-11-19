@@ -58,7 +58,7 @@ int main(int argc, char const *argv[])
 
         if (!ap.getMainFlag())
         {
-            throw "No main function specified!";
+            throw std::runtime_error("No main function specified!");
         }
 
         // Compile the program
@@ -72,7 +72,7 @@ int main(int argc, char const *argv[])
     }
     catch (const std::exception &exc)
     {
-        std::cout << exc.what();
+        std::cout << exc.what() << std::endl;
     }
 //calculate time at the end and print it
     duration = (std::clock() - start)/(double)CLOCKS_PER_SEC;
