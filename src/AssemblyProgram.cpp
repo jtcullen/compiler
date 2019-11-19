@@ -18,7 +18,7 @@ std::string AssemblyProgram::getLoopStartLabel()
     }
     else
     {
-        throw "No loop is open!";
+        throw std::runtime_error("No loop is open!");
     }
 }
 
@@ -30,7 +30,7 @@ std::string AssemblyProgram::getLoopEndLabel()
     }
     else
     {
-        throw "No loop is open!";
+        throw std::runtime_error("No loop is open!");
     }
 }
 
@@ -67,7 +67,7 @@ void AssemblyProgram::endScope()
     }
     else
     {
-        throw "No scope is open!";
+        throw std::runtime_error("No scope is open!");
     }
 }
 

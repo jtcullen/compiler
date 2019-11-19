@@ -50,7 +50,7 @@ Token Parser::expect(Token::Type tokenType)
     Token t = token(0);
     if (t.getType() != tokenType)
     {
-        throw "Expected a token of type: " + tokenType;
+        throw std::runtime_error("Expected a token of type: " + tokenType);
     }
     nextToken();
 
@@ -390,7 +390,7 @@ Expression *Parser::parsePrimaryExpression()
     }
     else
     {
-        throw "Expected a primary expression";
+        throw std::runtime_error("Expected a primary expression");
     }
 
     return exp;
