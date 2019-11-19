@@ -4,11 +4,16 @@
 #include <iostream>
 #include "Lexer.h"
 #include "Parser.h"
-
+#include <cstdio>
+#include <ctime>
 // TODO: validate integer size
 
 int main(int argc, char const *argv[])
 {
+    //create time varible and start it at beginning of the program
+    std::clock_t start;
+    double duration;
+    start = std::clock();
     std::string file;
     std::string outname = "a";
     if (argc < 2)
@@ -69,6 +74,8 @@ int main(int argc, char const *argv[])
     {
         std::cout << exc.what();
     }
-
+//calculate time at the end and print it
+    duration = (std::clock() - start)/(double)CLOCKS_PER_SEC;
+    std::cout << "Execution time: " << duration << std::endl;
     return 0;
 }
