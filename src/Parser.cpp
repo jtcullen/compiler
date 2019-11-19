@@ -351,15 +351,15 @@ Expression *Parser::parseUnaryExpression()
     Expression *exp;
     if (accept(Token::Type::SQUIGLY))
     {
-        exp = new Complement(parsePrimaryExpression());
+        exp = new Complement(parseUnaryExpression());
     }
     else if (accept(Token::Type::EXCLAMATION))
     {
-        exp = new Negation(parsePrimaryExpression());
+        exp = new Negation(parseUnaryExpression());
     }
     else if (accept(Token::Type::MINUS))
     {
-        exp = new Negative(parsePrimaryExpression());
+        exp = new Negative(parseUnaryExpression());
     }
     else
     {

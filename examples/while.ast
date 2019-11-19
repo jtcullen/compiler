@@ -1,0 +1,30 @@
+PROGRAM
+-FUNCTION: MAIN
+--Block: 
+---Declaration: A
+----INTEGER: 0
+---Declaration: B
+----INTEGER: 0
+---WHILE
+----INTEGER: 1
+----Block: 
+-----Assignment: A
+------Addition:
+-------Variable: A
+-------INTEGER: 1
+-----IF
+------Equal:
+-------Variable: A
+-------INTEGER: 5
+------CONTINUE
+-----Assignment: B
+------Addition:
+-------Variable: B
+-------INTEGER: 1
+-----IF
+------Equal:
+-------Variable: A
+-------INTEGER: 10
+------BREAK
+---RETURN
+----Variable: B

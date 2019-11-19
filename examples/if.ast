@@ -1,0 +1,13 @@
+PROGRAM
+-FUNCTION: MAIN
+--Block: 
+---Declaration: A
+----INTEGER: 1
+---IF
+----Equal:
+-----Variable: A
+-----INTEGER: 1
+----Assignment: A
+-----INTEGER: 0
+---RETURN
+----Variable: A

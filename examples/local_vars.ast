@@ -1,0 +1,38 @@
+PROGRAM
+-FUNCTION: MAIN
+--Block: 
+---Declaration: A
+----Addition:
+-----Multiplication:
+------Negative:
+-------INTEGER: 2
+------Subtraction:
+-------Subtraction:
+--------Multiplication:
+---------INTEGER: 1
+---------INTEGER: 4
+--------Division:
+---------INTEGER: 2
+---------INTEGER: 2
+-------INTEGER: 1
+-----Addition:
+------Subtraction:
+-------Addition:
+--------INTEGER: 6
+--------INTEGER: 2
+-------INTEGER: 3
+------Negation:
+-------Addition:
+--------INTEGER: 1
+--------INTEGER: 1
+---Assignment: A
+----Addition:
+-----Variable: A
+-----INTEGER: 3
+---Declaration: B
+---Assignment: B
+----INTEGER: 1
+---RETURN
+----Addition:
+-----Variable: A
+-----Variable: B

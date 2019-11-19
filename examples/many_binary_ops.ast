@@ -1,0 +1,27 @@
+PROGRAM
+-FUNCTION: MAIN
+--Block: 
+---RETURN
+----Addition:
+-----Multiplication:
+------Negative:
+-------INTEGER: 2
+------Subtraction:
+-------Subtraction:
+--------Multiplication:
+---------INTEGER: 1
+---------INTEGER: 4
+--------Division:
+---------INTEGER: 2
+---------INTEGER: 2
+-------INTEGER: 1
+-----Addition:
+------Subtraction:
+-------Addition:
+--------INTEGER: 6
+--------INTEGER: 2
+-------INTEGER: 3
+------Negation:
+-------Addition:
+--------INTEGER: 1
+--------INTEGER: 1

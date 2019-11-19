@@ -1,0 +1,16 @@
+PROGRAM
+-FUNCTION: MAIN
+--Block: 
+---RETURN
+----Complement:
+-----Complement:
+------Negative:
+-------Negation:
+--------Negation:
+---------Negation:
+----------Complement:
+-----------Complement:
+------------Complement:
+-------------Complement:
+--------------Negative:
+---------------INTEGER: 3

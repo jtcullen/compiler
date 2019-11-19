@@ -1,0 +1,7 @@
+PROGRAM
+-FUNCTION: MAIN
+--Block: 
+---RETURN
+----Addition:
+-----INTEGER: 2
+-----INTEGER: 2

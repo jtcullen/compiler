@@ -1,0 +1,6 @@
+PROGRAM
+-FUNCTION: MAIN
+--Block: 
+---RETURN
+----Negation:
+-----INTEGER: 0

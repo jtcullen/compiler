@@ -1,0 +1,24 @@
+PROGRAM
+-FUNCTION: MAIN
+--Block: 
+---Declaration: A
+----INTEGER: 1
+---Declaration: B
+----INTEGER: 5
+---FOR
+----Assignment: A
+-----INTEGER: 0
+----Less Than or Equal:
+-----Variable: A
+-----INTEGER: 5
+----Assignment: A
+-----Addition:
+------Variable: A
+------INTEGER: 1
+----Block: 
+-----Assignment: B
+------Addition:
+-------Variable: B
+-------INTEGER: 1
+---RETURN
+----Variable: B

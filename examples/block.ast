@@ -1,0 +1,10 @@
+PROGRAM
+-FUNCTION: MAIN
+--Block: 
+---Block: 
+----Declaration: I
+-----INTEGER: 0
+---Declaration: J
+----INTEGER: 1
+---RETURN
+----Variable: J

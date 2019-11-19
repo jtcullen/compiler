@@ -1,0 +1,35 @@
+PROGRAM
+-FUNCTION: MAIN
+--Block: 
+---RETURN
+----And:
+-----And:
+------And:
+-------And:
+--------And:
+---------Or:
+----------Or:
+-----------Equal:
+------------INTEGER: 5
+------------INTEGER: 4
+-----------Equal:
+------------INTEGER: 5
+------------INTEGER: 5
+----------Not Equal:
+-----------INTEGER: 3
+-----------INTEGER: 3
+---------Greater Than:
+----------INTEGER: 5
+----------INTEGER: 4
+--------Greater Than or Equal:
+---------INTEGER: 5
+---------INTEGER: 5
+-------Less Than:
+--------INTEGER: 4
+--------INTEGER: 5
+------Less Than or Equal:
+-------INTEGER: 5
+-------INTEGER: 5
+-----Not Equal:
+------INTEGER: 10
+------INTEGER: 5
